@@ -1,0 +1,24 @@
+{
+    "name": "musicman3/R2-D2",
+    "description": "R2-D2 PHP Router",
+    "type": "library",
+    "require": {
+        "php": "^8.3"
+    },
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Cruder\\": "src/R2D2"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cruder\\": "src/R2D2"
+        }
+    },
+    "authors": [
+        {
+            "name": "R2D2 and eMarket Team"
+        }
+    ]
+}

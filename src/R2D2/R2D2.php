@@ -19,11 +19,11 @@ namespace R2D2;
  * 
  */
 class R2D2 {
-    
+
     /**
-     * @var array|bool $settings (Router Settings)
+     * @var array|bool $config (Router Config)
      */
-    private $settings;
+    private $config;
 
     /**
      * Constructor
@@ -34,11 +34,20 @@ class R2D2 {
     }
 
     /**
-     * Set
+     * Config
      * 
-     * @param string $set Settings
+     * @param string $set Config
      */
-    public function set(array $set): void {
-        $this->settings = $set;
+    public function config(array $set): void {
+        $this->config = $set;
+    }
+
+    /**
+     * Get Config
+     * 
+     * @return array|bool $this->config Config
+     */
+    public function getConfig(): array|bool {
+        return $this->config;
     }
 }
