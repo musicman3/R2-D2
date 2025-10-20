@@ -20,4 +20,25 @@ namespace R2D2;
  */
 class R2D2 {
     
+    /**
+     * @var array|bool $settings (Router Settings)
+     */
+    private $settings;
+
+    /**
+     * Constructor
+     *
+     */
+    function __construct() {
+        
+    }
+
+    /**
+     * Set
+     * 
+     * @param string $set Settings
+     */
+    public function set(array $set): void {
+        $this->settings = $set;
+    }
 }
