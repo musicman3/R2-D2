@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace r2d2;
+namespace R2D2;
 
 /**
  * R2D2 PHP Router
