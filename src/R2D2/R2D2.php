@@ -56,7 +56,7 @@ class R2D2 {
     /**
      * Config
      * 
-     * @param string $set Config
+     * @param array $set Config
      */
     public function config(array $set): void {
         $this->config = $set;
@@ -68,6 +68,60 @@ class R2D2 {
      * @return array|bool $this->config Config
      */
     public function getConfig(): array|bool {
-        return [Valid::inGET('route')];
+        return $this->config;
+    }
+
+    /**
+     * File check
+     * 
+     * @param string $path Path check
+     */
+    public function fileCheck(string $path): string|bool {
+        if (file_exists(getenv('DOCUMENT_ROOT') . $path)) {
+            return getenv('DOCUMENT_ROOT') . $path;
+        }
+        return 'false';
+    }
+
+    /**
+     * Current branch
+     *
+     * @return string
+     */
+    public static function branch(): string {
+        $pathinfo = pathinfo(Valid::inSERVER('REQUEST_URI'));
+        if ($pathinfo['dirname'] == '/' || $pathinfo['dirname'] == '\\') {
+            return '/';
+        }
+        return $pathinfo['dirname'];
+    }
+
+    /**
+     * Return route data
+     * 
+     * @return array|bool $this->config Config
+     */
+    public function route(): array|bool {
+
+        $output = [];
+        $config = $this->getConfig();
+
+        foreach ($config['engine'] as $value => $name) {
+            foreach ($name as $key => $val) {
+                if ($key == 'branch' && $name['branch'] == $this->branch()) {
+                    $output['engine'][$key] = $val;
+                }
+                if ($key == 'constructor' && $name['branch'] == $this->branch()) {
+                    $output['engine'][$key] = $this->fileCheck($val);
+                }
+                if ($key == 'js' && $name['branch'] == $this->branch()) {
+                    $output['engine'][$key] = $this->fileCheck($val . '/' . Valid::inGET('route') . '/js.php');
+                }
+                if ($key == 'model' && $name['branch'] == $this->branch()) {
+                    $output['engine'][$key] = $this->fileCheck($val . '/' . ucfirst(Valid::inGET('route')) . '.php');
+                }
+            }
+        }
+        return $output;
     }
 }
