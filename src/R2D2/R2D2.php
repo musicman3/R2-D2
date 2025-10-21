@@ -43,7 +43,7 @@ class R2D2 {
     /**
      * @var array|bool $config (Router Config)
      */
-    private $config;
+    private static $config;
 
     /**
      * Constructor
@@ -59,7 +59,7 @@ class R2D2 {
      * @param array $set Config
      */
     public function config(array $set): void {
-        $this->config = $set;
+        self::$config = $set;
     }
 
     /**
@@ -68,7 +68,7 @@ class R2D2 {
      * @return array|bool $this->config Config
      */
     public function getConfig(): array|bool {
-        return $this->config;
+        return self::$config;
     }
 
     /**
@@ -113,6 +113,9 @@ class R2D2 {
                 }
                 if ($key == 'constructor' && $name['branch'] == $this->branch()) {
                     $output['engine'][$key] = $this->fileCheck($val);
+                }
+                if ($key == 'pages' && $name['branch'] == $this->branch()) {
+                    $output['engine'][$key] = $this->fileCheck($val . '/' . Valid::inGET('route') . '/index.php');
                 }
                 if ($key == 'js' && $name['branch'] == $this->branch()) {
                     $output['engine'][$key] = $this->fileCheck($val . '/' . Valid::inGET('route') . '/js.php');
