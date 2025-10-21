@@ -8,12 +8,12 @@
     "license": "Apache-2.0",
     "autoload": {
         "psr-4": {
-            "r2-d2\\": "src/R2R2"
+            "R2-D2\\": "src/R2R2"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "r2-d2\\": "src/R2D2"
+            "R2-D2\\": "src/R2D2"
         }
     },
     "authors": [
