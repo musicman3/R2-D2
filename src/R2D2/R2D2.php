@@ -48,6 +48,6 @@ class R2D2 {
      * @return array|bool $this->config Config
      */
     public function getConfig(): array|bool {
-        return $this->config;
+        return [1,2];
     }
 }
