@@ -43,7 +43,32 @@ class R2D2 {
     /**
      * @var array|bool $config (Router Config)
      */
-    private static $config;
+    private static $config = [
+        'engine' =>
+        [
+            'admin' => [
+                'branch' => '/admin',
+                'constructor' => '/view/default/admin/constructor.php',
+                'pages' => '/view/default/admin/pages',
+                'js' => '/js/structure/admin/pages',
+                'model' => '/model/eMarket/Admin',
+            ],
+            'catalog' => [
+                'branch' => '/',
+                'constructor' => '/view/default/catalog/constructor.php',
+                'pages' => '/view/default/catalog/pages',
+                'js' => '/js/structure/catalog/pages',
+                'model' => '/model/eMarket/Catalog',
+            ],
+            'install' => [
+                'branch' => '/install',
+                'constructor' => '/view/default/install/constructor.php',
+                'pages' => '/view/default/install/pages',
+                'js' => '/js/structure/install/pages',
+                'model' => '/model/eMarket/Install',
+            ],
+        ]
+    ];
 
     /**
      * Constructor

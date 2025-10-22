@@ -22,4 +22,5 @@
   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 
 error_reporting(-1);
+require_once('../src/R2D2/R2D2.php');
 require_once('../src/R2D2/R2/Valid.php');
