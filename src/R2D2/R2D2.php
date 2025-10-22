@@ -111,9 +111,15 @@ class R2D2 {
     /**
      * Current branch
      *
+     * @param string|null $branch Set branch for tests
      * @return string
      */
-    public static function branch(): string {
+    public static function branch(?string $branch = null): string {
+
+        if ($branch != null) {
+            return $branch;
+        }
+
         $pathinfo = pathinfo(Valid::inSERVER('REQUEST_URI'));
         if ($pathinfo['dirname'] == '/' || $pathinfo['dirname'] == '\\') {
             return '/';
@@ -122,11 +128,36 @@ class R2D2 {
     }
 
     /**
+     * Routing Map
+     *
+     * @param string|null $model Model path
+     * @return array (Routing Map array)
+     */
+    public static function routingMap(string $model): array {
+        $routing_parameters = [];
+        $files = glob(getenv('DOCUMENT_ROOT') . $model . '/*');
+
+        foreach ($files as $filename) {
+            $namespace = '\eMarket\Admin\\' . pathinfo($filename, PATHINFO_FILENAME);
+            if (isset($namespace::$routing_parameter)) {
+                $routing_parameters[$namespace::$routing_parameter] = pathinfo($filename, PATHINFO_FILENAME);
+            }
+        }
+
+        return $routing_parameters;
+    }
+
+    /**
      * Return route data
      *
+     * @param string|null $route Set branch for tests
      * @return array|bool $this->config Config
      */
-    public function route(): array|bool {
+    public function route(?string $route = null): array|bool {
+
+        if ($route == null) {
+            $route = Valid::inGET('route');
+        }
 
         $output = [];
         $config = $this->getConfig();
@@ -140,13 +171,13 @@ class R2D2 {
                     $output['engine'][$key] = $this->fileCheck($val);
                 }
                 if ($key == 'pages' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val . '/' . Valid::inGET('route') . '/index.php');
+                    $output['engine'][$key] = $this->fileCheck($val . '/' . $route . '/index.php');
                 }
                 if ($key == 'js' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val . '/' . Valid::inGET('route') . '/js.php');
+                    $output['engine'][$key] = $this->fileCheck($val . '/' . $route . '/js.php');
                 }
                 if ($key == 'model' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val . '/' . ucfirst(Valid::inGET('route')) . '.php');
+                    $output['engine'][$key] = $this->fileCheck($val . '/' . ucfirst($route) . '.php');
                 }
             }
         }
