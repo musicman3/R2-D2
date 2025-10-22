@@ -1,6 +1,6 @@
 <?php
 
-/* =-=-=-= Copyright © 2025 R2D2 =-=-=-=-=-= 
+/* =-=-=-= Copyright © 2025 R2D2 =-=-=-=-=-=
   |           APACHE-2.0 LICENSE            |
   |   https://github.com/musicman3/r2-d2    |
   |                   ___                   |
@@ -32,11 +32,11 @@ use R2D2\R2\{
 /**
  * R2D2 PHP Router
  *
- * @package R2D2 
+ * @package R2D2
  * @author R2D2 Team
  * @copyright © 2025 R2D2
  * @license Apache-2.0
- * 
+ *
  */
 class R2D2 {
 
@@ -50,12 +50,12 @@ class R2D2 {
      *
      */
     function __construct() {
-        
+
     }
 
     /**
      * Config
-     * 
+     *
      * @param array $set Config
      */
     public function config(array $set): void {
@@ -64,7 +64,7 @@ class R2D2 {
 
     /**
      * Get Config
-     * 
+     *
      * @return array|bool $this->config Config
      */
     public function getConfig(): array|bool {
@@ -73,7 +73,7 @@ class R2D2 {
 
     /**
      * File check
-     * 
+     *
      * @param string $path Path check
      */
     public function fileCheck(string $path): string|bool {
@@ -98,7 +98,7 @@ class R2D2 {
 
     /**
      * Return route data
-     * 
+     *
      * @return array|bool $this->config Config
      */
     public function route(): array|bool {
