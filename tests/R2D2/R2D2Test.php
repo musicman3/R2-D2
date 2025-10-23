@@ -42,23 +42,26 @@ final class R2D2Test extends TestCase {
                 'admin' => [
                     'branch' => '/admin',
                     'constructor' => '/view/default/admin/constructor.php',
-                    'pages' => '/view/default/admin/pages',
-                    'js' => '/js/structure/admin/pages',
-                    'model' => '/model/eMarket/Admin',
+                    'pagesPath' => '/view/default/admin/pages',
+                    'jsPath' => '/js/structure/admin/pages',
+                    'modelPath' => '/model/eMarket/Admin',
+                    'namespace' => '\eMarket\Admin',
                 ],
                 'catalog' => [
                     'branch' => '/',
                     'constructor' => '/view/default/catalog/constructor.php',
-                    'pages' => '/view/default/catalog/pages',
-                    'js' => '/js/structure/catalog/pages',
-                    'model' => '/model/eMarket/Catalog',
+                    'pagesPath' => '/view/default/catalog/pages',
+                    'jsPath' => '/js/structure/catalog/pages',
+                    'modelPath' => '/model/eMarket/Catalog',
+                    'namespace' => '\eMarket\Catalog',
                 ],
                 'install' => [
                     'branch' => '/install',
                     'constructor' => '/view/default/install/constructor.php',
-                    'pages' => '/view/default/install/pages',
-                    'js' => '/js/structure/install/pages',
-                    'model' => '/model/eMarket/Install',
+                    'pagesPath' => '/view/default/install/pages',
+                    'jsPath' => '/js/structure/install/pages',
+                    'modelPath' => '/model/eMarket/Install',
+                    'namespace' => '\eMarket\Install',
                 ],
             ]
         ];
@@ -68,26 +71,29 @@ final class R2D2Test extends TestCase {
 
         $this->assertCount(1, $result);
         $this->assertCount(3, $result['engine']);
-        $this->assertCount(5, $result['engine']['admin']);
-        $this->assertCount(5, $result['engine']['catalog']);
-        $this->assertCount(5, $result['engine']['install']);
+        $this->assertCount(6, $result['engine']['admin']);
+        $this->assertCount(6, $result['engine']['catalog']);
+        $this->assertCount(6, $result['engine']['install']);
 
         $this->assertSame($result['engine']['admin']['branch'], '/admin');
         $this->assertSame($result['engine']['admin']['constructor'], '/view/default/admin/constructor.php');
-        $this->assertSame($result['engine']['admin']['pages'], '/view/default/admin/pages');
-        $this->assertSame($result['engine']['admin']['js'], '/js/structure/admin/pages');
-        $this->assertSame($result['engine']['admin']['model'], '/model/eMarket/Admin');
+        $this->assertSame($result['engine']['admin']['pagesPath'], '/view/default/admin/pages');
+        $this->assertSame($result['engine']['admin']['jsPath'], '/js/structure/admin/pages');
+        $this->assertSame($result['engine']['admin']['modelPath'], '/model/eMarket/Admin');
+        $this->assertSame($result['engine']['admin']['namespace'], '\eMarket\Admin');
 
         $this->assertSame($result['engine']['catalog']['branch'], '/');
         $this->assertSame($result['engine']['catalog']['constructor'], '/view/default/catalog/constructor.php');
-        $this->assertSame($result['engine']['catalog']['pages'], '/view/default/catalog/pages');
-        $this->assertSame($result['engine']['catalog']['js'], '/js/structure/catalog/pages');
-        $this->assertSame($result['engine']['catalog']['model'], '/model/eMarket/Catalog');
+        $this->assertSame($result['engine']['catalog']['pagesPath'], '/view/default/catalog/pages');
+        $this->assertSame($result['engine']['catalog']['jsPath'], '/js/structure/catalog/pages');
+        $this->assertSame($result['engine']['catalog']['modelPath'], '/model/eMarket/Catalog');
+        $this->assertSame($result['engine']['catalog']['namespace'], '\eMarket\Catalog');
 
         $this->assertSame($result['engine']['install']['branch'], '/install');
         $this->assertSame($result['engine']['install']['constructor'], '/view/default/install/constructor.php');
-        $this->assertSame($result['engine']['install']['pages'], '/view/default/install/pages');
-        $this->assertSame($result['engine']['install']['js'], '/js/structure/install/pages');
-        $this->assertSame($result['engine']['install']['model'], '/model/eMarket/Install');
+        $this->assertSame($result['engine']['install']['pagesPath'], '/view/default/install/pages');
+        $this->assertSame($result['engine']['install']['jsPath'], '/js/structure/install/pages');
+        $this->assertSame($result['engine']['install']['modelPath'], '/model/eMarket/Install');
+        $this->assertSame($result['engine']['install']['namespace'], '\eMarket\Install');
     }
 }

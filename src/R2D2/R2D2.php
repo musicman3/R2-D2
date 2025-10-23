@@ -49,23 +49,26 @@ class R2D2 {
             'admin' => [
                 'branch' => '/admin',
                 'constructor' => '/view/default/admin/constructor.php',
-                'pages' => '/view/default/admin/pages',
-                'js' => '/js/structure/admin/pages',
-                'model' => '/model/eMarket/Admin',
+                'pagesPath' => '/view/default/admin/pages',
+                'jsPath' => '/js/structure/admin/pages',
+                'modelPath' => '/model/eMarket/Admin',
+                'namespace' => '\eMarket\Admin',
             ],
             'catalog' => [
                 'branch' => '/',
                 'constructor' => '/view/default/catalog/constructor.php',
-                'pages' => '/view/default/catalog/pages',
-                'js' => '/js/structure/catalog/pages',
-                'model' => '/model/eMarket/Catalog',
+                'pagesPath' => '/view/default/catalog/pages',
+                'jsPath' => '/js/structure/catalog/pages',
+                'modelPath' => '/model/eMarket/Catalog',
+                'namespace' => '\eMarket\Catalog',
             ],
             'install' => [
                 'branch' => '/install',
                 'constructor' => '/view/default/install/constructor.php',
-                'pages' => '/view/default/install/pages',
-                'js' => '/js/structure/install/pages',
-                'model' => '/model/eMarket/Install',
+                'pagesPath' => '/view/default/install/pages',
+                'jsPath' => '/js/structure/install/pages',
+                'modelPath' => '/model/eMarket/Install',
+                'namespace' => '\eMarket\Install',
             ],
         ]
     ];
@@ -75,7 +78,7 @@ class R2D2 {
      *
      */
     function __construct() {
-
+        
     }
 
     /**
@@ -131,16 +134,17 @@ class R2D2 {
      * Routing Map
      *
      * @param string|null $model Model path
+     * @param string|null $namespace Namespace path
      * @return array (Routing Map array)
      */
-    public static function routingMap(string $model): array {
+    public static function routingMap(?string $model, ?string $namespace): array {
         $routing_parameters = [];
         $files = glob(getenv('DOCUMENT_ROOT') . $model . '/*');
 
         foreach ($files as $filename) {
-            $namespace = '\eMarket\Admin\\' . pathinfo($filename, PATHINFO_FILENAME);
-            if (isset($namespace::$routing_parameter)) {
-                $routing_parameters[$namespace::$routing_parameter] = pathinfo($filename, PATHINFO_FILENAME);
+            $full_namespace = $namespace . '\\' . pathinfo($filename, PATHINFO_FILENAME);
+            if (isset($full_namespace::$routing_parameter)) {
+                $routing_parameters[$full_namespace::$routing_parameter] = pathinfo($filename, PATHINFO_FILENAME);
             }
         }
 
@@ -170,14 +174,23 @@ class R2D2 {
                 if ($key == 'constructor' && $name['branch'] == $this->branch()) {
                     $output['engine'][$key] = $this->fileCheck($val);
                 }
-                if ($key == 'pages' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val . '/' . $route . '/index.php');
+                if ($key == 'pagesPath' && $name['branch'] == $this->branch()) {
+                    $output['engine']['page'] = $this->fileCheck($val . '/' . $route . '/index.php');
                 }
-                if ($key == 'js' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val . '/' . $route . '/js.php');
+                if ($key == 'jsPath' && $name['branch'] == $this->branch()) {
+                    $output['engine']['js'] = $this->fileCheck($val . '/' . $route . '/js.php');
                 }
-                if ($key == 'model' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val . '/' . ucfirst($route) . '.php');
+                if ($key == 'modelPath' && $name['branch'] == $this->branch()) {
+                    $routing_map = self::routingMap($val, $config['engine'][$value]['namespace']);
+                    foreach ($routing_map as $routing_name => $class) {
+                        if ($route == $routing_name) {
+                            $output['engine']['model'] = $this->fileCheck($val . '/' . $class . '.php');
+                            $output['engine']['className'] = $class;
+                        }
+                    }
+                }
+                if ($key == 'namespace' && $name['branch'] == $this->branch()) {
+                    $output['engine'][$key] = $val;
                 }
             }
         }
