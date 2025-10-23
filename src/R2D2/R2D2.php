@@ -78,7 +78,7 @@ class R2D2 {
      *
      */
     function __construct() {
-
+        
     }
 
     /**
@@ -171,16 +171,14 @@ class R2D2 {
 
         $namespaces = [];
         foreach ($files as $file) {
-            $namespace_right_part_prepare = explode($model . '/', $file)[1];
-            $namespace_right_part = explode('.php', $namespace_right_part_prepare)[0];
-            $namespaces_right = str_replace('/', '\\', $namespace_right_part);
+            $namespace_right_part = explode($model . '/', $file)[1];
+            $namespaces_right = str_replace(['.php', '/'], ['', '\\'], $namespace_right_part);
             $namespaces[$file] = $namespace . '\\' . $namespaces_right;
         }
 
         foreach ($namespaces as $key => $value) {
-            if (isset($value::$routing_parameter)) {
-                $routing_parameters[$value::$routing_parameter] = [$key => $value];
-            }
+            $route = str_replace([$namespace . '\\', '\\'], ['', '/'], $value);
+            $routing_parameters[$route] = [$key => $value];
         }
 
         return $routing_parameters;
@@ -210,17 +208,17 @@ class R2D2 {
                     $output['engine'][$key] = $this->fileCheck($val);
                 }
                 if ($key == 'pagesPath' && $name['branch'] == $this->branch()) {
-                    $output['engine']['page'] = $this->fileCheck($val . '/' . $route . '/index.php');
+                    $output['engine']['page'] = $this->fileCheck($val . '/' . $route . '.php');
                 }
                 if ($key == 'jsPath' && $name['branch'] == $this->branch()) {
-                    $output['engine']['js'] = $this->fileCheck($val . '/' . $route . '/js.php');
+                    $output['engine']['js'] = $this->fileCheck($val . '/' . $route . '.php');
                 }
                 if ($key == 'modelPath' && $name['branch'] == $this->branch()) {
                     $routing_map = self::routingMap($val, $config['engine'][$value]['namespace']);
                     foreach ($routing_map as $routing_name => $class) {
                         if ($route == $routing_name) {
                             $output['engine']['model'] = key($class);
-                            $output['engine']['className'] = $class[key($class)];
+                            $output['engine']['namespace'] = $class[key($class)];
                         }
                     }
                 }
