@@ -78,7 +78,7 @@ class R2D2 {
      *
      */
     function __construct() {
-        
+
     }
 
     /**
@@ -131,20 +131,54 @@ class R2D2 {
     }
 
     /**
+     * Building tree to files
+     *
+     * @param string $dir Path to directory with files
+     * @return array
+     */
+    private static function filesTree(string $dir): array {
+
+        $handle = opendir($dir) or die("Error: Can't open directory $dir");
+        $files = [];
+        $subfiles = [];
+        while (false !== ($file = readdir($handle))) {
+            if ($file != '.' && $file != '..' && $file != '.gitkeep' && $file != '.gitignore') {
+                if (is_dir($dir . '/' . $file)) {
+
+                    $subfiles = self::filesTree($dir . '/' . $file);
+
+                    $files = array_merge($files, $subfiles);
+                } else {
+                    $files[] = $dir . '/' . $file;
+                }
+            }
+        }
+        closedir($handle);
+        return $files;
+    }
+
+    /**
      * Routing Map
      *
      * @param string|null $model Model path
      * @param string|null $namespace Namespace path
      * @return array (Routing Map array)
      */
-    public static function routingMap(?string $model, ?string $namespace): array {
+    private static function routingMap(?string $model, ?string $namespace): array {
         $routing_parameters = [];
-        $files = glob(getenv('DOCUMENT_ROOT') . $model . '/*');
+        $files = self::filesTree(getenv('DOCUMENT_ROOT') . $model);
 
-        foreach ($files as $filename) {
-            $full_namespace = $namespace . '\\' . pathinfo($filename, PATHINFO_FILENAME);
-            if (isset($full_namespace::$routing_parameter)) {
-                $routing_parameters[$full_namespace::$routing_parameter] = pathinfo($filename, PATHINFO_FILENAME);
+        $namespaces = [];
+        foreach ($files as $file) {
+            $namespace_right_part_prepare = explode($model . '/', $file)[1];
+            $namespace_right_part = explode('.php', $namespace_right_part_prepare)[0];
+            $namespaces_right = str_replace('/', '\\', $namespace_right_part);
+            $namespaces[$file] = $namespace . '\\' . $namespaces_right;
+        }
+
+        foreach ($namespaces as $key => $value) {
+            if (isset($value::$routing_parameter)) {
+                $routing_parameters[$value::$routing_parameter] = [$key => $value];
             }
         }
 
@@ -184,13 +218,10 @@ class R2D2 {
                     $routing_map = self::routingMap($val, $config['engine'][$value]['namespace']);
                     foreach ($routing_map as $routing_name => $class) {
                         if ($route == $routing_name) {
-                            $output['engine']['model'] = $this->fileCheck($val . '/' . $class . '.php');
-                            $output['engine']['className'] = $class;
+                            $output['engine']['model'] = key($class);
+                            $output['engine']['className'] = $class[key($class)];
                         }
                     }
-                }
-                if ($key == 'namespace' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $val;
                 }
             }
         }
