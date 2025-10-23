@@ -117,7 +117,7 @@ class R2D2 {
      * @param string|null $branch Set branch for tests
      * @return string
      */
-    public static function branch(?string $branch = null): string {
+    public function branch(?string $branch = null): string {
 
         if ($branch != null) {
             return $branch;
@@ -127,7 +127,8 @@ class R2D2 {
         if ($pathinfo['dirname'] == '/' || $pathinfo['dirname'] == '\\') {
             return '/';
         }
-        return $pathinfo['dirname'];
+
+        return '/' . explode('/', Valid::inSERVER('REQUEST_URI'))[1];
     }
 
     /**
