@@ -152,6 +152,28 @@ class R2D2 {
     }
 
     /**
+     * Routing Map
+     *
+     * @param string|null $model Model path
+     * @param string|null $namespace Namespace path
+     * @return array (Routing Map array)
+     */
+    public static function routingMapOld(?string $model, ?string $namespace): array {
+        $routing_parameters = [];
+        $Helpers = new \R2D2\R2\Helpers();
+        $files = $Helpers->filesTree(getenv('DOCUMENT_ROOT') . $model);
+
+        foreach ($files as $filename) {
+            $namespaces = $namespace . '\\' . pathinfo($filename, PATHINFO_FILENAME);
+            if (isset($namespaces::$routing_parameter)) {
+                $routing_parameters[$namespaces::$routing_parameter] = pathinfo($filename, PATHINFO_FILENAME);
+            }
+        }
+
+        return $routing_parameters;
+    }
+
+    /**
      * Return route data
      *
      * @param string|null $route Set branch for tests
