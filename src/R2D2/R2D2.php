@@ -41,6 +41,11 @@ use R2D2\R2\{
 class R2D2 {
 
     /**
+     * @var array|bool $object (Router Object)
+     */
+    private static $object = FALSE;
+
+    /**
      * @var array|bool $config (Router Config)
      */
     private static $config = [
@@ -78,7 +83,7 @@ class R2D2 {
      *
      */
     function __construct() {
-        
+
     }
 
     /**
@@ -97,18 +102,6 @@ class R2D2 {
      */
     public function getConfig(): array|bool {
         return self::$config;
-    }
-
-    /**
-     * File check
-     *
-     * @param string $path Path check
-     */
-    public function fileCheck(string $path): string|bool {
-        if (file_exists(getenv('DOCUMENT_ROOT') . $path)) {
-            return getenv('DOCUMENT_ROOT') . $path;
-        }
-        return 'false';
     }
 
     /**
@@ -132,42 +125,16 @@ class R2D2 {
     }
 
     /**
-     * Building tree to files
-     *
-     * @param string $dir Path to directory with files
-     * @return array
-     */
-    private static function filesTree(string $dir): array {
-
-        $handle = opendir($dir) or die("Error: Can't open directory $dir");
-        $files = [];
-        $subfiles = [];
-        while (false !== ($file = readdir($handle))) {
-            if ($file != '.' && $file != '..' && $file != '.gitkeep' && $file != '.gitignore') {
-                if (is_dir($dir . '/' . $file)) {
-
-                    $subfiles = self::filesTree($dir . '/' . $file);
-
-                    $files = array_merge($files, $subfiles);
-                } else {
-                    $files[] = $dir . '/' . $file;
-                }
-            }
-        }
-        closedir($handle);
-        return $files;
-    }
-
-    /**
      * Routing Map
      *
      * @param string|null $model Model path
      * @param string|null $namespace Namespace path
      * @return array (Routing Map array)
      */
-    private static function routingMap(?string $model, ?string $namespace): array {
+    private function routingMap(?string $model, ?string $namespace): array {
         $routing_parameters = [];
-        $files = self::filesTree(getenv('DOCUMENT_ROOT') . $model);
+        $Helpers = new \R2D2\R2\Helpers();
+        $files = $Helpers->filesTree(getenv('DOCUMENT_ROOT') . $model);
 
         $namespaces = [];
         foreach ($files as $file) {
@@ -192,38 +159,86 @@ class R2D2 {
      */
     public function route(?string $route = null): array|bool {
 
-        if ($route == null) {
-            $route = Valid::inGET('route');
-        }
+        if (!self::$object) {
 
-        $output = [];
-        $config = $this->getConfig();
+            if ($route == null) {
+                $route = Valid::inGET('route');
+            }
 
-        foreach ($config['engine'] as $value => $name) {
-            foreach ($name as $key => $val) {
-                if ($key == 'branch' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $val;
-                }
-                if ($key == 'constructor' && $name['branch'] == $this->branch()) {
-                    $output['engine'][$key] = $this->fileCheck($val);
-                }
-                if ($key == 'pagesPath' && $name['branch'] == $this->branch()) {
-                    $output['engine']['page'] = $this->fileCheck($val . '/' . $route . '.php');
-                }
-                if ($key == 'jsPath' && $name['branch'] == $this->branch()) {
-                    $output['engine']['js'] = $this->fileCheck($val . '/' . $route . '.php');
-                }
-                if ($key == 'modelPath' && $name['branch'] == $this->branch()) {
-                    $routing_map = self::routingMap($val, $config['engine'][$value]['namespace']);
-                    foreach ($routing_map as $routing_name => $class) {
-                        if ($route == $routing_name) {
-                            $output['engine']['model'] = key($class);
-                            $output['engine']['namespace'] = $class[key($class)];
+            $Helpers = new \R2D2\R2\Helpers();
+
+            $output = [];
+            $config = $this->getConfig();
+
+            foreach ($config['engine'] as $value => $name) {
+                foreach ($name as $key => $val) {
+                    if ($key == 'branch' && $name['branch'] == $this->branch()) {
+                        $output['engine'][$key] = $val;
+                    }
+                    if ($key == 'constructor' && $name['branch'] == $this->branch()) {
+                        $output['engine'][$key] = $Helpers->fileCheck($val);
+                    }
+                    if ($key == 'pagesPath' && $name['branch'] == $this->branch()) {
+                        $output['engine']['page'] = $Helpers->fileCheck($val . '/' . $route . '.php');
+                    }
+                    if ($key == 'jsPath' && $name['branch'] == $this->branch()) {
+                        $output['engine']['js'] = $Helpers->fileCheck($val . '/' . $route . '.php');
+                    }
+                    if ($key == 'modelPath' && $name['branch'] == $this->branch()) {
+                        $routing_map = $this->routingMap($val, $config['engine'][$value]['namespace']);
+                        $output['engine']['namespaces'] = $routing_map;
+                        foreach ($routing_map as $routing_name => $class) {
+                            if ($route == $routing_name) {
+                                $output['engine']['model'] = key($class);
+                                $output['engine']['namespace'] = $class[key($class)];
+                            }
                         }
                     }
                 }
             }
+            return $output;
+        } else {
+            return self::$object;
         }
-        return $output;
+    }
+
+    /**
+     * Constructor
+     *
+     * @return string|null|bool Path to constructor file
+     */
+    public function constructor(): string|null|bool {
+
+        return $this->route()['engine']['constructor'];
+    }
+
+    /**
+     * Page
+     *
+     * @return string|null|bool Path to Page file
+     */
+    public function page(): string|null|bool {
+
+        return $this->route()['engine']['page'];
+    }
+
+    /**
+     * Namespace
+     *
+     * @return string|null|bool Path to Page file
+     */
+    public function namespace(): string|null|bool {
+
+        return $this->route()['engine']['namespace'];
+    }
+
+    /**
+     * Namespaces
+     *
+     * @return array Path to Page file
+     */
+    public function namespaces(): array {
+
+        return $this->route()['engine']['namespaces'];
     }
 }
