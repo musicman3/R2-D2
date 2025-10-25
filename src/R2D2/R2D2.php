@@ -63,6 +63,7 @@ class R2D2 {
                 'jsPath' => '/js/structure/admin/pages',
                 'modelPath' => '/model/eMarket/Admin',
                 'namespace' => '\eMarket\Admin',
+                'index_route' => 'dashboard',
             ],
             'catalog' => [
                 'branch' => '/',
@@ -71,6 +72,7 @@ class R2D2 {
                 'jsPath' => '/js/structure/catalog/pages',
                 'modelPath' => '/model/eMarket/Catalog',
                 'namespace' => '\eMarket\Catalog',
+                'index_route' => 'catalog',
             ],
             'install' => [
                 'branch' => '/install',
@@ -79,6 +81,25 @@ class R2D2 {
                 'jsPath' => '/js/structure/install/pages',
                 'modelPath' => '/model/eMarket/Install',
                 'namespace' => '\eMarket\Install',
+                'index_route' => 'index',
+            ],
+            'uploads' => [
+                'branch' => '/uploads',
+                'constructor' => '',
+                'pagesPath' => '',
+                'jsPath' => '',
+                'modelPath' => '/model/eMarket/Uploads',
+                'namespace' => '\eMarket\Uploads',
+                'index_route' => '',
+            ],
+            'jsonrpc/services' => [
+                'branch' => '/jsonrpc/services',
+                'constructor' => '',
+                'pagesPath' => '',
+                'jsPath' => '',
+                'modelPath' => '/model/eMarket/JsonRpc',
+                'namespace' => '\eMarket\JsonRpc',
+                'index_route' => '',
             ],
         ]
     ];
@@ -103,10 +124,17 @@ class R2D2 {
     /**
      * Set Route
      *
-     * @param string|null $set Manual set Route
      */
-    public function setRoute(string|null $set): void {
-        self::$route = $set;
+    public function setRoute(): void {
+        $config = $this->getConfig();
+
+        foreach ($config['engine'] as $name) {
+            if ($this->branch() == $name['branch']) {
+                if (!Valid::inGET('route') || Valid::inGET('route') == '') {
+                    self::$route = $name['index_route'];
+                }
+            }
+        }
     }
 
     /**
@@ -174,6 +202,8 @@ class R2D2 {
     public function route(): array|bool {
         if (!self::$object) {
 
+            $this->setRoute();
+
             if (self::$route == null) {
                 $route = Valid::inGET('route');
             } else {
@@ -188,10 +218,10 @@ class R2D2 {
             foreach ($config['engine'] as $value => $name) {
                 foreach ($name as $key => $val) {
                     if ($key == 'branch' && $name['branch'] == $this->branch()) {
-                        $output['engine'][$key] = $val;
+                        $output['engine']['branch'] = $val;
                     }
                     if ($key == 'constructor' && $name['branch'] == $this->branch()) {
-                        $output['engine'][$key] = $Helpers->fileCheck($val);
+                        $output['engine']['constructor'] = $Helpers->fileCheck($val);
                     }
                     if ($key == 'pagesPath' && $name['branch'] == $this->branch()) {
                         $output['engine']['page'] = $Helpers->fileCheck($val . '/' . $route . '/index.php');
@@ -204,6 +234,7 @@ class R2D2 {
                     }
                     if ($key == 'modelPath' && $name['branch'] == $this->branch()) {
                         $routing_map = $this->routingMap($val, $config['engine'][$value]['namespace']);
+
                         foreach ($routing_map as $routing_name => $class) {
                             if ($route == $routing_name) {
                                 $output['engine']['namespace'] = $class;
@@ -262,7 +293,10 @@ class R2D2 {
      */
     public function namespace(): string|null|bool {
 
-        return $this->route()['engine']['namespace'];
+        if (isset($this->route()['engine']['namespace']) && class_exists($this->route()['engine']['namespace'])) {
+            return $this->route()['engine']['namespace'];
+        }
+        exit;
     }
 
     /**
