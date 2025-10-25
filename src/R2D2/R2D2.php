@@ -289,7 +289,7 @@ class R2D2 {
     /**
      * Namespace
      *
-     * @return string|null|bool Path to Page file
+     * @return string|null|bool Full Namespace to Class
      */
     public function namespace(): string|null|bool {
 
