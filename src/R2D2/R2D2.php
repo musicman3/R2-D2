@@ -46,6 +46,11 @@ class R2D2 {
     private static $object = FALSE;
 
     /**
+     * @var string|null $route (Route path)
+     */
+    private static $route = null;
+
+    /**
      * @var array|bool $config (Router Config)
      */
     private static $config = [
@@ -83,7 +88,7 @@ class R2D2 {
      *
      */
     function __construct() {
-
+        
     }
 
     /**
@@ -93,6 +98,15 @@ class R2D2 {
      */
     public function config(array $set): void {
         self::$config = $set;
+    }
+
+    /**
+     * Set Route
+     *
+     * @param string|null $set Manual set Route
+     */
+    public function setRoute(string|null $set): void {
+        self::$route = $set;
     }
 
     /**
@@ -115,13 +129,13 @@ class R2D2 {
         if ($branch != null) {
             return $branch;
         }
+        $parse_url = parse_url(Valid::inSERVER('REQUEST_URI'));
 
-        $pathinfo = pathinfo(Valid::inSERVER('REQUEST_URI'));
-        if ($pathinfo['dirname'] == '/' || $pathinfo['dirname'] == '\\') {
+        if ($parse_url['path'] == '/') {
             return '/';
         }
 
-        return '/' . explode('/', Valid::inSERVER('REQUEST_URI'))[1];
+        return '/' . explode('/', $parse_url['path'])[1];
     }
 
     /**
@@ -143,30 +157,9 @@ class R2D2 {
             $namespaces[$file] = $namespace . '\\' . $namespaces_right;
         }
 
-        foreach ($namespaces as $key => $value) {
-            $route = str_replace([$namespace . '\\', '\\'], ['', '/'], $value);
-            $routing_parameters[$route] = [$key => $value];
-        }
-
-        return $routing_parameters;
-    }
-
-    /**
-     * Routing Map
-     *
-     * @param string|null $model Model path
-     * @param string|null $namespace Namespace path
-     * @return array (Routing Map array)
-     */
-    public static function routingMapOld(?string $model, ?string $namespace): array {
-        $routing_parameters = [];
-        $Helpers = new \R2D2\R2\Helpers();
-        $files = $Helpers->filesTree(getenv('DOCUMENT_ROOT') . $model);
-
-        foreach ($files as $filename) {
-            $namespaces = $namespace . '\\' . pathinfo($filename, PATHINFO_FILENAME);
-            if (isset($namespaces::$routing_parameter)) {
-                $routing_parameters[$namespaces::$routing_parameter] = pathinfo($filename, PATHINFO_FILENAME);
+        foreach ($namespaces as $value) {
+            if (isset($value::$routing_parameter)) {
+                $routing_parameters[$value::$routing_parameter] = $value;
             }
         }
 
@@ -176,15 +169,15 @@ class R2D2 {
     /**
      * Return route data
      *
-     * @param string|null $route Set branch for tests
      * @return array|bool $this->config Config
      */
-    public function route(?string $route = null): array|bool {
-
+    public function route(): array|bool {
         if (!self::$object) {
 
-            if ($route == null) {
+            if (self::$route == null) {
                 $route = Valid::inGET('route');
+            } else {
+                $route = self::$route;
             }
 
             $Helpers = new \R2D2\R2\Helpers();
@@ -201,23 +194,31 @@ class R2D2 {
                         $output['engine'][$key] = $Helpers->fileCheck($val);
                     }
                     if ($key == 'pagesPath' && $name['branch'] == $this->branch()) {
-                        $output['engine']['page'] = $Helpers->fileCheck($val . '/' . $route . '.php');
+                        $output['engine']['page'] = $Helpers->fileCheck($val . '/' . $route . '/index.php');
+                        if ($Helpers->fileCheck($val . '/' . $route . '/index.php') == 'false') {
+                            $output['engine']['page'] = $Helpers->fileCheck($val . '/page_not_found/index.php');
+                        }
                     }
                     if ($key == 'jsPath' && $name['branch'] == $this->branch()) {
-                        $output['engine']['js'] = $Helpers->fileCheck($val . '/' . $route . '.php');
+                        $output['engine']['js'] = $Helpers->fileCheck($val . '/' . $route . '/js.php');
                     }
                     if ($key == 'modelPath' && $name['branch'] == $this->branch()) {
                         $routing_map = $this->routingMap($val, $config['engine'][$value]['namespace']);
-                        $output['engine']['namespaces'] = $routing_map;
                         foreach ($routing_map as $routing_name => $class) {
                             if ($route == $routing_name) {
-                                $output['engine']['model'] = key($class);
-                                $output['engine']['namespace'] = $class[key($class)];
+                                $output['engine']['namespace'] = $class;
+                                $output['engine']['routing_parameter'] = $routing_name;
+                                break;
+                            } else {
+                                $output['engine']['namespace'] = $config['engine'][$value]['namespace'] . '\PageNotFound';
+                                $output['engine']['routing_parameter'] = 'page_not_found';
                             }
                         }
                     }
                 }
             }
+
+            self::$object = $output;
             return $output;
         } else {
             return self::$object;
@@ -245,6 +246,16 @@ class R2D2 {
     }
 
     /**
+     * JS
+     *
+     * @return string|null|bool Path to js file
+     */
+    public function js(): string|null|bool {
+
+        return $this->route()['engine']['js'];
+    }
+
+    /**
      * Namespace
      *
      * @return string|null|bool Path to Page file
@@ -255,12 +266,12 @@ class R2D2 {
     }
 
     /**
-     * Namespaces
+     * Routing parameter
      *
-     * @return array Path to Page file
+     * @return string|null|bool Routing parameter
      */
-    public function namespaces(): array {
+    public function routingParameter(): string|null|bool {
 
-        return $this->route()['engine']['namespaces'];
+        return $this->route()['engine']['routing_parameter'];
     }
 }
