@@ -70,7 +70,7 @@ All setup begins with placing a configuration file at the single point of receip
 The response array of values ​​from R2-D2 will be something like this:
 
 ```php
-    [engine] => 
+    engine => 
         [
             [branch] => /admin // branch (http://localhost/admin)
             [constructor] => /var/www/localhost/view/default/admin/constructor.php // Path to template constructor file
