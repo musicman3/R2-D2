@@ -87,7 +87,7 @@ For convenience, methods have been created that output data as a string. Example
 $routing = new Routing();
 
 $constructor = $routing->constructor(); (Path to template constructor file)
-$page = $routing->page(); (Path to this template file)
+$page = $routing->page(); (Path to this template page file)
 $js = $routing->js(); (Path to JS file-constructor)
 $namespace = $routing->namespace(); (Object namespace)
 $routing_parameter = $routing->routingParameter(); (Routing path)
