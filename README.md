@@ -81,3 +81,21 @@ The response array of values ​​from R2-D2 will be something like this (for u
         ]
 ```
 Routing uses the keyword "route", so an example url would look like this: https://localhost/admin/?route=my_route_path
+
+For convenience, methods have been created that output data as a string. Example:
+```php
+$routing = new Routing();
+
+$constructor = $routing->constructor(); (Path to template constructor file)
+$page = $routing->page(); (Path to this template file)
+$js = $routing->js(); (Path to JS file-constructor)
+$namespace = $routing->namespace(); (Object namespace)
+$routing_parameter = $routing->routingParameter(); (Routing path)
+```
+
+### PHP Standards Recommendations Used: 
+  - PSR-1 (Basic Coding Standard)
+  - PSR-4 (Autoloading Standard)
+  - PSR-5 (PHPDoc Standard)
+  - PSR-12 (Extended Coding Style Guide)
+  - PSR-19 (PHPDoc tags)
