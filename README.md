@@ -19,7 +19,7 @@ All setup starts with placing a configuration file in a single entry point for a
 ```php
 ['engine' =>
  [
-    'admin' => [ // Name
+  'admin' => [ // Name
     'branch' => '/admin', // Branch name
     'constructor' => '/view/default/admin/constructor.php', // Path to template constructor
     'pagesPath' => '/view/default/admin/pages', // Path to template pages
@@ -28,7 +28,7 @@ All setup starts with placing a configuration file in a single entry point for a
     'namespace' => '\eMarket\Admin', // Path to branch Namespace
     'index_route' => 'dashboard', // Branch index file
   ],
-    'catalog' => [
+  'catalog' => [
     'branch' => '/',
     'constructor' => '/view/default/catalog/constructor.php',
     'pagesPath' => '/view/default/catalog/pages',
@@ -37,7 +37,7 @@ All setup starts with placing a configuration file in a single entry point for a
     'namespace' => '\eMarket\Catalog',
     'index_route' => 'catalog',
   ],
-    'install' => [
+  'install' => [
     'branch' => '/install',
     'constructor' => '/view/default/install/constructor.php',
     'pagesPath' => '/view/default/install/pages',
@@ -46,7 +46,7 @@ All setup starts with placing a configuration file in a single entry point for a
     'namespace' => '\eMarket\Install',
     'index_route' => 'index',
   ],
-    'uploads' => [
+  'uploads' => [
     'branch' => '/uploads',
     'constructor' => '',
     'pagesPath' => '',
@@ -55,7 +55,7 @@ All setup starts with placing a configuration file in a single entry point for a
     'namespace' => '\eMarket\Uploads',
     'index_route' => '',
   ],
-    'JsonRpc' => [
+  'JsonRpc' => [
     'branch' => '/services/jsonrpc/request',
     'constructor' => '',
     'pagesPath' => '',
