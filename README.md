@@ -82,10 +82,17 @@ The response array of values ​​from R2-D2 will be something like this (for u
 ```
 Routing uses the keyword "route", so an example url would look like this: https://localhost/admin/?route=my_route_path
 
-For convenience, methods have been created that output data as a string. Example:
+Example:
 ```php
 $routing = new Routing();
 
+$config = [...]; // My config file
+$routing->config($config); // Set config
+$config = $routing->getConfig() // Get config
+
+$route = $routing->route(); (Outbound routing as an array)
+
+// For convenience, methods have been created that output data as a string.
 $constructor = $routing->constructor(); (Path to template constructor file)
 $page = $routing->page(); (Path to this template page file)
 $js = $routing->js(); (Path to JS file-constructor)
