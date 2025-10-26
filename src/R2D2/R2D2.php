@@ -92,14 +92,14 @@ class R2D2 {
                 'namespace' => '\eMarket\Uploads',
                 'index_route' => '',
             ],
-            'jsonrpc/services' => [
-                'branch' => '/jsonrpc/services',
+            'JsonRpc' => [
+                'branch' => '/services/jsonrpc/request',
                 'constructor' => '',
                 'pagesPath' => '',
                 'jsPath' => '',
                 'modelPath' => '/model/eMarket/JsonRpc',
                 'namespace' => '\eMarket\JsonRpc',
-                'index_route' => '',
+                'index_route' => 'JsonRpcController',
             ],
         ]
     ];
@@ -163,7 +163,7 @@ class R2D2 {
             return '/';
         }
 
-        return '/' . explode('/', $parse_url['path'])[1];
+        return rtrim($parse_url['path'], '/');
     }
 
     /**
