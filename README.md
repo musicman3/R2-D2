@@ -84,7 +84,7 @@ Routing uses the keyword "route", so an example url would look like this: https:
 
 Example:
 ```php
-$routing = new Routing();
+$routing = new \R2D2\R2D2();
 
 $config = [...]; // My config file
 $routing->config($config); // Set config
