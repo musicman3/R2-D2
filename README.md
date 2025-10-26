@@ -67,7 +67,7 @@ All setup begins with placing a configuration file at the single point of receip
         ]
     ];
 ```
-The response array of values ​​from R2-D2 will be something like this:
+The response array of values ​​from R2-D2 will be something like this (for url https://localhost/admin/?route=dashboard)
 
 ```php
     'engine' => 
@@ -77,6 +77,6 @@ The response array of values ​​from R2-D2 will be something like this:
             'page' => '/var/www/localhost/view/default/admin/pages/dashboard/index.php', // Path to this template file
             'js' => '/var/www/localhost/js/structure/admin/pages/dashboard/js.php', // Path to JS file-constructor
             'namespace' => '\eMarket\Admin\Dashboard', // Object namespace
-            'routing_parameter' => 'dashboard', // Routing path (&route=dashboard)
+            'routing_parameter' => 'dashboard', // Routing path (?route=dashboard)
         ]
 ```
