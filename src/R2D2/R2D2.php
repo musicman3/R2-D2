@@ -26,7 +26,8 @@ declare(strict_types=1);
 namespace R2D2;
 
 use R2D2\R2\{
-    Valid
+    Valid,
+    Helpers
 };
 
 /**
@@ -175,7 +176,7 @@ class R2D2 {
      */
     private function routingMap(?string $model, ?string $namespace): array {
         $routing_parameters = [];
-        $Helpers = new \R2D2\R2\Helpers();
+        $Helpers = new Helpers();
         $files = $Helpers->filesTree(getenv('DOCUMENT_ROOT') . $model);
 
         $namespaces = [];
@@ -262,7 +263,6 @@ class R2D2 {
      * @return string|null|bool Path to constructor file
      */
     public function constructor(): string|null|bool {
-
         return $this->route()['engine']['constructor'];
     }
 
@@ -272,8 +272,8 @@ class R2D2 {
      * @return string|null|bool Path to Page file
      */
     public function page(): string|null|bool {
-
-        return $this->route()['engine']['page'];
+        $Helpers = new Helpers();
+        return $Helpers->outputDataFiltering($this->route()['engine']['page']);
     }
 
     /**
@@ -282,8 +282,8 @@ class R2D2 {
      * @return string|null|bool Path to js file
      */
     public function js(): string|null|bool {
-
-        return $this->route()['engine']['js'];
+        $Helpers = new Helpers();
+        return $Helpers->outputDataFiltering($this->route()['engine']['js']);
     }
 
     /**
@@ -292,9 +292,9 @@ class R2D2 {
      * @return string|null|bool Full Namespace to Class
      */
     public function namespace(): string|null|bool {
-
+        $Helpers = new Helpers();
         if (isset($this->route()['engine']['namespace']) && class_exists($this->route()['engine']['namespace'])) {
-            return $this->route()['engine']['namespace'];
+            return $Helpers->outputDataFiltering($this->route()['engine']['namespace']);
         }
         exit;
     }
@@ -305,7 +305,7 @@ class R2D2 {
      * @return string|null|bool Routing parameter
      */
     public function routingParameter(): string|null|bool {
-
-        return $this->route()['engine']['routing_parameter'];
+        $Helpers = new Helpers();
+        return $Helpers->outputDataFiltering($this->route()['engine']['routing_parameter']);
     }
 }

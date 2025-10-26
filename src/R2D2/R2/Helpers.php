@@ -41,7 +41,7 @@ class Helpers {
      *
      */
     function __construct() {
-
+        
     }
 
     /**
@@ -81,5 +81,51 @@ class Helpers {
         }
         closedir($handle);
         return $files;
+    }
+
+    /**
+     * Function for escaping special characters.
+     * Protection against XSS, LFI and other types of attacks.
+     * Output data filtering 
+     *
+     * @param string|array $data Data to escape characters
+     * @return mixed
+     */
+    public function outputDataFiltering(mixed $data): mixed {
+        // symbol and replacement
+        $find = ["'", "script", "/.", "./"];
+        $replace = ["&#8216;", "!s-c-r-i-p-t!", "!/.!", "!./!"];
+
+        $output = $this->recursiveArrayReplace($find, $replace, $data);
+
+        return $output;
+    }
+
+    /**
+     * Recursive array replace
+     *
+     * @param string|array $find Find value
+     * @param string|array $replace Replace value
+     * @param string|array $data Input data
+     * @return mixed
+     */
+    public function recursiveArrayReplace(array|string $find, array|string $replace, mixed $data): mixed {
+        if (is_bool($data) || is_null($data)) {
+            return $data;
+        }
+
+        if (is_int($data)) {
+            return str_ireplace($find, $replace, (string) $data);
+        }
+
+        if (!is_array($data)) {
+            return str_ireplace($find, $replace, $data);
+        }
+
+        $output = [];
+        foreach ($data as $key => $value) {
+            $output[$key] = $this->recursiveArrayReplace($find, $replace, $value);
+        }
+        return $output;
     }
 }
