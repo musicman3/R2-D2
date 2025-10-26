@@ -31,7 +31,7 @@ use R2D2\R2\{
 };
 
 /**
- * R2D2 PHP Router
+ * R2D2 PHP AutoRouter
  *
  * @package R2D2
  * @author R2D2 Team
@@ -211,7 +211,7 @@ class R2D2 {
                 $route = self::$route;
             }
 
-            $Helpers = new \R2D2\R2\Helpers();
+            $Helpers = new Helpers();
 
             $output = [];
             $config = $this->getConfig();
