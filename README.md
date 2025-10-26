@@ -70,15 +70,16 @@ All setup starts with placing a configuration file in a single entry point for a
 The response array of values ​​from R2-D2 will be something like this (for url https://localhost/admin/?route=dashboard)
 
 ```php
-    'engine' => 
-        [
-            'branch' => '/admin', // branch (http://localhost/admin)
-            'constructor' => '/var/www/localhost/view/default/admin/constructor.php', // Path to template constructor file
-            'page' => '/var/www/localhost/view/default/admin/pages/dashboard/index.php', // Path to this template file
-            'js' => '/var/www/localhost/js/structure/admin/pages/dashboard/js.php', // Path to JS file-constructor
-            'namespace' => '\eMarket\Admin\Dashboard', // Object namespace
-            'routing_parameter' => 'dashboard', // Routing path (?route=dashboard)
-        ]
+['engine' => 
+    [
+    'branch' => '/admin', // branch (http://localhost/admin)
+    'constructor' => '/var/www/localhost/view/default/admin/constructor.php', // Path to template constructor
+    'page' => '/var/www/localhost/view/default/admin/pages/dashboard/index.php', // Path to this template file
+    'js' => '/var/www/localhost/js/structure/admin/pages/dashboard/js.php', // Path to JS file-constructor
+    'namespace' => '\eMarket\Admin\Dashboard', // Object namespace
+    'routing_parameter' => 'dashboard', // Routing path (?route=dashboard)
+    ]
+]
 ```
 Routing uses the keyword "route", so an example url would look like this: https://localhost/admin/?route=my_route_path
 
