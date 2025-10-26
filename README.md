@@ -14,7 +14,7 @@ R2-D2 only allows you to configure the main routing branches, while R2-D2 automa
 
 You simply add new objects (classes), and they will be automatically configured according to the configuration file structure. For autorouting to be feasible, we must adhere to the minimum placement requirements for new objects, which are also set in the configuration file.
 
-All setup begins with placing a configuration file at the single point of receipt for all requests. The configuration file structure is:
+All setup starts with placing a configuration file in a single entry point for all requests.. The configuration file structure is:
 
 ```php
         'engine' =>
