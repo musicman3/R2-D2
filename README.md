@@ -84,20 +84,20 @@ Routing uses the keyword "route", so an example url would look like this: https:
 
 Example:
 ```php
-$routing = new \R2D2\R2D2();
+$R2D2 = new \R2D2\R2D2();
 
 $config = [...]; // My config file
-$routing->config($config); // Set config
-$config = $routing->getConfig() // Get config
+$R2D2->config($config); // Set config
+$config = $R2D2->getConfig() // Get config
 
-$route = $routing->route(); (Outbound routing as an array)
+$route = $R2D2->route(); (Outbound routing as an array)
 
 // For convenience, methods have been created that output data as a string.
-$constructor = $routing->constructor(); (Path to template constructor file)
-$page = $routing->page(); (Path to this template page file)
-$js = $routing->js(); (Path to JS file-constructor)
-$namespace = $routing->namespace(); (Object namespace)
-$routing_parameter = $routing->routingParameter(); (Routing path)
+$constructor = $R2D2->constructor(); (Path to template constructor file)
+$page = $R2D2->page(); (Path to this template page file)
+$js = $R2D2->js(); (Path to JS file-constructor)
+$namespace = $R2D2->namespace(); (Object namespace)
+$routing_parameter = $R2D2->routingParameter(); (Routing path)
 ```
 
 ### PHP Standards Recommendations Used: 
