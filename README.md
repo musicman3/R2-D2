@@ -21,7 +21,7 @@ All setup begins with placing a configuration file at the single point of receip
         [
             'admin' => [ // Name
                 'branch' => '/admin', // Branch name
-                'constructor' => '/view/default/admin/constructor.php', // Path to constructor file
+                'constructor' => '/view/default/admin/constructor.php', // Path to template constructor file
                 'pagesPath' => '/view/default/admin/pages', // Path to template pages
                 'jsPath' => '/js/structure/admin/pages', // Path to JS files
                 'modelPath' => '/model/eMarket/Admin', // Path to Model (objects this branch)
