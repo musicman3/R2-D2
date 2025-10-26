@@ -80,3 +80,4 @@ The response array of values ​​from R2-D2 will be something like this (for u
             'routing_parameter' => 'dashboard', // Routing path (?route=dashboard)
         ]
 ```
+Routing uses the keyword "route", so an example url would look like this: https://localhost/admin/?route=my_route_path
