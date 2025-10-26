@@ -126,7 +126,7 @@ class R2D2 {
      * Set Route
      *
      */
-    public function setRoute(): void {
+    private function setRoute(): void {
         $config = $this->getConfig();
 
         foreach ($config['engine'] as $name) {
@@ -153,7 +153,7 @@ class R2D2 {
      * @param string|null $branch Set branch for tests
      * @return string
      */
-    public function branch(?string $branch = null): string {
+    private function branch(?string $branch = null): string {
 
         if ($branch != null) {
             return $branch;
