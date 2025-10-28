@@ -67,17 +67,18 @@ All setup starts with placing a configuration file in a single entry point for a
  ]
 ];
 ```
-The response array of values ​​from R2-D2 will be something like this (for url https://localhost/admin/?route=dashboard)
+The response array of values ​​from R2-D2 will be something like this (for url https://localhost/admin/?route=orders)
 
 ```php
 ['engine' => 
     [
     'branch' => '/admin', // branch (http://localhost/admin)
     'constructor' => '/var/www/localhost/view/default/admin/constructor.php', // Path to template constructor
-    'page' => '/var/www/localhost/view/default/admin/pages/dashboard/index.php', // Path to this template file
-    'js' => '/var/www/localhost/js/structure/admin/pages/dashboard/js.php', // Path to JS file-constructor
-    'namespace' => '\eMarket\Admin\Dashboard', // Object namespace
-    'routing_parameter' => 'dashboard', // Routing path (?route=dashboard)
+    'page' => '/var/www/localhost/view/default/admin/pages/orders/index.php', // Path to this template file
+    'js' => '/var/www/localhost/js/structure/admin/pages/orders/js.php', // Path to JS file-constructor
+    'namespace' => '\eMarket\Admin\Orders', // Object namespace
+    'routing_parameter' => 'orders', // Routing path (?route=dashboard),
+    'index_route' => 'dashboard', // Default index page for this branch (dashboard)
     ]
 ]
 ```
@@ -99,6 +100,7 @@ $page = $R2D2->page(); (Path to this template page file)
 $js = $R2D2->js(); (Path to JS file-constructor)
 $namespace = $R2D2->namespace(); (Object namespace)
 $routing_parameter = $R2D2->routingParameter(); (Routing path)
+$index = $R2D2->indexRoute(); (Default index page)
 ```
 
 ### PHP Standards Recommendations Used: 
