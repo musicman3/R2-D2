@@ -50,7 +50,7 @@ class Helpers {
      * @param string $path Path check
      */
     public function fileCheck(string $path): string|bool {
-        if (file_exists(getenv('DOCUMENT_ROOT') . $path)) {
+        if (file_exists(getenv('DOCUMENT_ROOT') . $path) && $path != '') {
             return getenv('DOCUMENT_ROOT') . $path;
         }
         return 'false';

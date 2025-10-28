@@ -110,7 +110,7 @@ class R2D2 {
      *
      */
     function __construct() {
-
+        
     }
 
     /**
@@ -266,6 +266,9 @@ class R2D2 {
      * @return string|null|bool Path to constructor file
      */
     public function constructor(): string|null|bool {
+        if ($this->route()['engine']['constructor'] == 'false') {
+            return false;
+        }
         return $this->route()['engine']['constructor'];
     }
 
@@ -276,6 +279,9 @@ class R2D2 {
      */
     public function page(): string|null|bool {
         $Helpers = new Helpers();
+        if ($this->route()['engine']['page'] == 'false') {
+            return false;
+        }
         return $Helpers->outputDataFiltering($this->route()['engine']['page']);
     }
 
@@ -286,6 +292,9 @@ class R2D2 {
      */
     public function js(): string|null|bool {
         $Helpers = new Helpers();
+        if ($this->route()['engine']['js'] == 'false') {
+            return false;
+        }
         return $Helpers->outputDataFiltering($this->route()['engine']['js']);
     }
 
