@@ -187,7 +187,7 @@ class R2D2 {
         }
 
         foreach ($namespaces as $value) {
-            if (isset($value::$routing_parameter)) {
+            if (class_exists($value) && isset($value::$routing_parameter)) {
                 $routing_parameters[$value::$routing_parameter] = $value;
             }
         }
