@@ -110,7 +110,7 @@ class R2D2 {
      *
      */
     function __construct() {
-        
+
     }
 
     /**
@@ -247,6 +247,9 @@ class R2D2 {
                             }
                         }
                     }
+                    if ($key == 'index_route' && $name['branch'] == $this->branch()) {
+                        $output['engine']['index_route'] = $val;
+                    }
                 }
             }
 
@@ -297,6 +300,16 @@ class R2D2 {
             return $Helpers->outputDataFiltering($this->route()['engine']['namespace']);
         }
         exit;
+    }
+
+    /**
+     * Index route
+     *
+     * @return string|null|bool Index file name
+     */
+    public function indexRoute(): string|null|bool {
+        $Helpers = new Helpers();
+        return $Helpers->outputDataFiltering($this->route()['engine']['index_route']);
     }
 
     /**
