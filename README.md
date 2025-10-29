@@ -28,7 +28,7 @@ The structure of the configuration file. Example for 5 branches:
     'jsPath' => '/js/structure/catalog/pages', // Path to JS files
     'modelPath' => '/model/eMarket/Catalog', // Path to Model (objects this branch)
     'namespace' => '\eMarket\Catalog', // Path to branch Namespace
-    'index_route' => 'catalog', // Branch index file
+    'index_route' => 'catalog', // Default index page for this branch
   ],
   'admin' => [
     'branch' => '/admin',
