@@ -22,22 +22,22 @@ The structure of the configuration file. Example for 5 branches:
 ['engine' =>
  [
  'catalog' => [
-    'branch' => '/',
-    'constructor' => '/view/default/catalog/constructor.php',
-    'pagesPath' => '/view/default/catalog/pages',
-    'jsPath' => '/js/structure/catalog/pages',
-    'modelPath' => '/model/eMarket/Catalog',
-    'namespace' => '\eMarket\Catalog',
-    'index_route' => 'catalog',
+    'branch' => '/', // Branch name
+    'constructor' => '/view/default/catalog/constructor.php', // Path to template constructor
+    'pagesPath' => '/view/default/catalog/pages', // Path to template pages
+    'jsPath' => '/js/structure/catalog/pages', // Path to JS files
+    'modelPath' => '/model/eMarket/Catalog', // Path to Model (objects this branch)
+    'namespace' => '\eMarket\Catalog', // Path to branch Namespace
+    'index_route' => 'catalog', // Branch index file
   ],
   'admin' => [ // Name
-    'branch' => '/admin', // Branch name
-    'constructor' => '/view/default/admin/constructor.php', // Path to template constructor
-    'pagesPath' => '/view/default/admin/pages', // Path to template pages
-    'jsPath' => '/js/structure/admin/pages', // Path to JS files
-    'modelPath' => '/model/eMarket/Admin', // Path to Model (objects this branch)
-    'namespace' => '\eMarket\Admin', // Path to branch Namespace
-    'index_route' => 'dashboard', // Branch index file
+    'branch' => '/admin',
+    'constructor' => '/view/default/admin/constructor.php',
+    'pagesPath' => '/view/default/admin/pages',
+    'jsPath' => '/js/structure/admin/pages',
+    'modelPath' => '/model/eMarket/Admin',
+    'namespace' => '\eMarket\Admin',
+    'index_route' => 'dashboard',
   ],
   'install' => [
     'branch' => '/install',
