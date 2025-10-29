@@ -14,11 +14,26 @@ R2-D2 only allows you to configure the main routing branches, while R2-D2 automa
 
 You simply add new objects (classes), and they will be automatically configured according to the configuration file structure. For autorouting to be feasible, we must adhere to the minimum placement requirements for new objects, which are also set in the configuration file.
 
-All setup starts with placing a configuration file in a single entry point for all requests. The structure of the configuration file is approximately as follows (example for 5 branches):
+All setup starts with placing a configuration file in a single entry point for all requests. 
 
+The structure of the configuration file. Example for 5 branches: 
+`./
+./admin
+./install
+./uploads
+./services/jsonrpc/request`:
 ```php
 ['engine' =>
  [
+ 'catalog' => [
+    'branch' => '/',
+    'constructor' => '/view/default/catalog/constructor.php',
+    'pagesPath' => '/view/default/catalog/pages',
+    'jsPath' => '/js/structure/catalog/pages',
+    'modelPath' => '/model/eMarket/Catalog',
+    'namespace' => '\eMarket\Catalog',
+    'index_route' => 'catalog',
+  ],
   'admin' => [ // Name
     'branch' => '/admin', // Branch name
     'constructor' => '/view/default/admin/constructor.php', // Path to template constructor
@@ -27,15 +42,6 @@ All setup starts with placing a configuration file in a single entry point for a
     'modelPath' => '/model/eMarket/Admin', // Path to Model (objects this branch)
     'namespace' => '\eMarket\Admin', // Path to branch Namespace
     'index_route' => 'dashboard', // Branch index file
-  ],
-  'catalog' => [
-    'branch' => '/',
-    'constructor' => '/view/default/catalog/constructor.php',
-    'pagesPath' => '/view/default/catalog/pages',
-    'jsPath' => '/js/structure/catalog/pages',
-    'modelPath' => '/model/eMarket/Catalog',
-    'namespace' => '\eMarket\Catalog',
-    'index_route' => 'catalog',
   ],
   'install' => [
     'branch' => '/install',
