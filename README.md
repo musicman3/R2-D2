@@ -17,11 +17,7 @@ You simply add new objects (classes), and they will be automatically configured 
 All setup starts with placing a configuration file in a single entry point for all requests. 
 
 The structure of the configuration file. Example for 5 branches: 
-`./
-./admin
-./install
-./uploads
-./services/jsonrpc/request`:
+`./, ./admin, ./install, ./uploads, ./services/jsonrpc/request`:
 ```php
 ['engine' =>
  [
