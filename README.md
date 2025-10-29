@@ -103,7 +103,7 @@ $routing_parameter = $R2D2->routingParameter(); (Routing path)
 $index = $R2D2->indexRoute(); (Default index page)
 ```
 To ensure the router finds the object we need, we add a required parameter to the object variable `public static $routing_parameter`:
-This parameter does not have to match the name of the object, and can be arbitrary.
+This parameter does not have to match the name of the object, and can be arbitrary. This parameter must be unique for all objects in the specified section and must not be repeated in other objects in this section. Therefore, when creating an object, we immediately assign it the `route` parameter, allowing us to easily add objects to the project by simply copying them, without creating a new routing parameter for the object in the router configuration. R2-D2 will automatically construct the entire routing path.
 
 Example:
 ```php
