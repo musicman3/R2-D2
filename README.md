@@ -102,6 +102,33 @@ $namespace = $R2D2->namespace(); (Object namespace)
 $routing_parameter = $R2D2->routingParameter(); (Routing path)
 $index = $R2D2->indexRoute(); (Default index page)
 ```
+To ensure the router finds the object we need, we add a required parameter to the object variable `public static $routing_parameter`:
+This parameter does not have to match the name of the object, and can be arbitrary.
+
+Example:
+```php
+declare(strict_types=1);
+
+namespace eMarket\Admin;
+
+/**
+ * Invoice
+ *
+ */
+class InvoiceBlank {
+
+    public static $routing_parameter = 'invoice';
+
+    /**
+     * Constructor
+     *
+     */
+    function __construct() {
+    }
+}
+```
+
+After this, the specified method will be accessible via the URL: `/admin/?route=invoice`
 
 ### PHP Standards Recommendations Used: 
   - PSR-1 (Basic Coding Standard)
