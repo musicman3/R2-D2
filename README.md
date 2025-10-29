@@ -109,7 +109,7 @@ Example:
 ```php
 declare(strict_types=1);
 
-namespace eMarket\Admin;
+namespace myProject\Admin;
 
 /**
  * Invoice
