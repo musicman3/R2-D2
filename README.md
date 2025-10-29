@@ -21,7 +21,7 @@ The structure of the configuration file. Example for 5 branches:
 ```php
 ['engine' =>
  [
- 'catalog' => [
+ 'catalog' => [ // Name
     'branch' => '/', // Branch name
     'constructor' => '/view/default/catalog/constructor.php', // Path to template constructor
     'pagesPath' => '/view/default/catalog/pages', // Path to template pages
@@ -30,7 +30,7 @@ The structure of the configuration file. Example for 5 branches:
     'namespace' => '\eMarket\Catalog', // Path to branch Namespace
     'index_route' => 'catalog', // Branch index file
   ],
-  'admin' => [ // Name
+  'admin' => [
     'branch' => '/admin',
     'constructor' => '/view/default/admin/constructor.php',
     'pagesPath' => '/view/default/admin/pages',
