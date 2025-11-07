@@ -57,12 +57,23 @@ class R2D2 {
     private static $config = [];
 
     /**
+     * @var object|bool $savePage (The current object of the loaded page)
+     */
+    private static $savePage = FALSE;
+
+    /**
+     * @var array|string|bool $middleware (The current middleware of the loaded page)
+     */
+    private static $middleware = FALSE;
+
+    /**
      * Config
      *
      * @param array $set Config
      */
     public function config(array $set): void {
         self::$config = $set;
+        $this->namespace();
     }
 
     /**
@@ -249,9 +260,48 @@ class R2D2 {
     public function namespace(): string|null|bool {
         $Helpers = new Helpers();
         if (isset($this->route()['engine']['namespace']) && class_exists($this->route()['engine']['namespace'])) {
-            return $Helpers->outputDataFiltering($this->route()['engine']['namespace']);
+
+            $class = $Helpers->outputDataFiltering($this->route()['engine']['namespace']);
+            $page = new $class();
+
+            if (self::$savePage == FALSE) {
+                self::$savePage = $page;
+            }
+
+            $this->setMiddleware($page);
+
+            return $class;
         }
         exit;
+    }
+
+    /**
+     * Set Middleware
+     *
+     * @param object $page Page middleware
+     */
+    private function setMiddleware(object $page): void {
+        if (isset($page::$middleware)) {
+            self::$middleware = $page::$middleware;
+        }
+    }
+
+    /**
+     * Get Middleware
+     *
+     * @return array|string|bool Middleware string
+     */
+    public function getMiddleware(): array|string|bool {
+        return self::$middleware;
+    }
+
+    /**
+     * Get Page Object
+     *
+     * @return object|bool Page object
+     */
+    public function getPageObject(): object|bool {
+        return self::$savePage;
     }
 
     /**

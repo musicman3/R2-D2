@@ -103,9 +103,13 @@ $js = $R2D2->js(); (Path to JS file-constructor)
 $namespace = $R2D2->namespace(); (Object namespace)
 $routing_parameter = $R2D2->routingParameter(); (Routing path)
 $index = $R2D2->indexRoute(); (Default index page)
+$middleware = $R2D2->getMiddleware(); (Get middleware list)
+$pageObject = $R2D2->getPageObject(); (Get page object)
 ```
 To ensure the router finds the object we need, we add a required parameter to the object variable `public static $routing_parameter`:
 This parameter does not have to match the name of the object, and can be arbitrary. This parameter must be unique for all objects in the specified section and must not be repeated in other objects in this section. Therefore, when creating an object, we immediately assign it the `route` parameter, aallowing us to easily add objects to the project by simply copying the file to the directory, without creating a new routing parameter for the object in the router configuration. R2-D2 will automatically construct the entire routing path.
+
+You can also use middleware for objects. To do this, add the `$middleware` public static property with a list of middleware to use, as a string or array. This list will be displayed during routing via the `getPageObject()` method. You can then connect middleware objects according to your architecture.
 
 Example:
 ```php
@@ -120,6 +124,7 @@ namespace myProject\Admin;
 class InvoiceBlank {
 
     public static $routing_parameter = 'invoice';
+    public static $middleware = 'Authorize, CSRF'; // or array variant ['Authorize, CSRF']
 
     /**
      * Constructor
