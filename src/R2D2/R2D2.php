@@ -57,11 +57,6 @@ class R2D2 {
     private static $config = [];
 
     /**
-     * @var object|bool $savePage (The current object of the loaded page)
-     */
-    private static $savePage = FALSE;
-
-    /**
      * @var array|string|bool $middleware (The current middleware of the loaded page)
      */
     private static $middleware = FALSE;
@@ -262,13 +257,8 @@ class R2D2 {
         if (isset($this->route()['engine']['namespace']) && class_exists($this->route()['engine']['namespace'])) {
 
             $class = $Helpers->outputDataFiltering($this->route()['engine']['namespace']);
-            $page = new $class();
 
-            if (self::$savePage == FALSE) {
-                self::$savePage = $page;
-            }
-
-            $this->setMiddleware($page);
+            $this->setMiddleware($class);
 
             return $class;
         }
@@ -278,9 +268,9 @@ class R2D2 {
     /**
      * Set Middleware
      *
-     * @param object $page Page middleware
+     * @param string $page Page middleware
      */
-    private function setMiddleware(object $page): void {
+    private function setMiddleware(string $page): void {
         if (isset($page::$middleware)) {
             self::$middleware = $page::$middleware;
         }
@@ -293,15 +283,6 @@ class R2D2 {
      */
     public function getMiddleware(): array|string|bool {
         return self::$middleware;
-    }
-
-    /**
-     * Get Page Object
-     *
-     * @return object|bool Page object
-     */
-    public function getPageObject(): object|bool {
-        return self::$savePage;
     }
 
     /**
