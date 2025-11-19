@@ -109,7 +109,15 @@ class R2D2 {
         }
         $parse_url = parse_url(Valid::inSERVER('REQUEST_URI'));
 
+        if (!isset($parse_url['path'])) {
+            return '';
+        }
+
         if ($parse_url['path'] == '/') {
+            return '/';
+        }
+
+        if ($parse_url['path'] == '\\') {
             return '/';
         }
 
